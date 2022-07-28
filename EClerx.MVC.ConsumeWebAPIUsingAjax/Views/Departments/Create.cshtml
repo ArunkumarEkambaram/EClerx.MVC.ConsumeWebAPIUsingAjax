@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Add New Department</h2>
+
+<div class="row">
+    <div class="col-md-5">
+        <form>
+            <div class="mb-3">
+                <label>Department Code</label>
+                <input type="text" id="Code" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>Department Name</label>
+                <input type="text" id="Name" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>Department Head</label>
+                <input type="text" id="Head" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>Location</label>
+                <input type="text" id="Location" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary" id="btnAddNew">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#btnAddNew").click(function () {
+                var department = {
+                    cDepartmentCode: $("#Code").val(),
+                    vDepartmentName: $("#Name").val(),
+                    vDepartmentHead: $("#Head").val(),
+                    vLocation: $("#Location").val()
+                };
+                //console.log(department);
+
+                $.ajax({
+                    url: "http://localhost:50269/api/Departments/AddNew",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(department),
+                    success: function (data) {
+                        alert("Department Created Successfully");
+                        clearText();
+                        //console.log(window.location.origin);
+                        window.location = window.location.origin + "/Departments/Index";
+                    },
+                    error: function (err) {
+                        // console.log(err);
+                        alert(err.responseText);
+                    }
+                });
+
+                function clearText() {
+                    $("#Code").val("");
+                    $("#Name").val("");
+                    $("#Head").val("");
+                    $("#Location").val("");
+                }
+            })
+        });
+    </script>
+}
